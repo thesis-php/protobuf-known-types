@@ -1,0 +1,34 @@
+{
+    "name": "thesis/protobuf-known-types",
+    "description": "Google protobuf known types collection.",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "kafkiansky",
+            "email": "vadimzanfir@gmail.com"
+        },
+        {
+            "name": "Valentin Udaltsov",
+            "email": "udaltsov.valentin@gmail.com"
+        },
+        {
+            "name": "Thesis Team",
+            "homepage": "https://github.com/orgs/thesis-php/people"
+        }
+    ],
+    "require": {
+        "php": "^8.4",
+        "ext-bcmath": "*",
+        "thesis/protobuf": "^0.1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Google\\Protobuf\\": "src/"
+        }
+    },
+    "config": {
+        "lock": false,
+        "sort-packages": true
+    }
+}
