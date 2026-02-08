@@ -1,6 +1,6 @@
-# Google protobuf known types.
+## Generated types for protocol buffers known types.
 
-## Installation
+### Installation
 
 ```shell
 composer require thesis/protobuf-known-types
