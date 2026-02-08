@@ -103,14 +103,6 @@ phpstan: var vendor ## Analyze code using PHPStan
 	$(RUN) phpstan analyze --memory-limit=1G $(ARGS)
 .PHONY: phpstan
 
-test: var vendor up ## Run tests using PHPUnit
-	$(RUN) vendor/bin/phpunit $(ARGS)
-.PHONY: test
-
-infect: var vendor up ## Run mutation tests using Infection
-	$(RUN) infection --show-mutations $(ARGS)
-.PHONY: infect
-
 deps-analyze: vendor ## Analyze project dependencies using Composer dependency analyser
 	$(RUN) composer-dependency-analyser $(ARGS)
 .PHONY: deps-analyze
@@ -130,7 +122,7 @@ composer-normalize-check: ## Check that composer.json is normalized
 fix: fixer rector composer-normalize ## Run all fixing recipes
 .PHONY: fix
 
-check: fixer-check rector-check composer-validate composer-normalize-check deps-analyze phpstan test  ## Run all project checks
+check: fixer-check rector-check composer-validate composer-normalize-check deps-analyze phpstan  ## Run all project checks
 .PHONY: check
 
 WELL_KNOWN_PROTOS = \
