@@ -137,8 +137,8 @@ WELL_KNOWN_PROTOS = \
     google/protobuf/timestamp.proto \
     google/protobuf/type.proto
 
-compile: ## Compile known types from third_party/protobuf
-	protoc -I./third_party/protobuf/src \
+compile: ## Compile known types
+	protoc \
 	    --plugin=protoc-gen-custom-plugin=/usr/local/bin/protoc-gen-php \
 	    $(WELL_KNOWN_PROTOS) \
 	    --custom-plugin_out=src_path=.:src
