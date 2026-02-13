@@ -1,4 +1,4 @@
-## Generated types for protocol buffers known types.
+## Generated types for protocol buffers [known types](https://github.com/protocolbuffers/protobuf/tree/main/src/google/protobuf).
 
 ### Installation
 
