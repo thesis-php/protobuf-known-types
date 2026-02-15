@@ -23,6 +23,7 @@ new PhpCsFixerCodingStandard()->applyTo($config, [
     'phpdoc_annotation_without_dot' => false,
     'phpdoc_summary' => false,
     'phpdoc_trim_consecutive_blank_line_separation' => false,
+    'global_namespace_import' => false,
 ]);
 
 return $config;

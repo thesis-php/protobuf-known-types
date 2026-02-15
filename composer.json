@@ -20,12 +20,15 @@
     "require": {
         "php": "^8.4",
         "ext-bcmath": "*",
-        "thesis/protobuf": "^0.1.0"
+        "thesis/protobuf": "^0.1.2"
     },
     "autoload": {
         "psr-4": {
             "Google\\Protobuf\\": "src/"
-        }
+        },
+        "files": [
+            "src/autoload.metadata.php"
+        ]
     },
     "config": {
         "lock": false,
