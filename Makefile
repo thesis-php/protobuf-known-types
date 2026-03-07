@@ -103,6 +103,10 @@ phpstan: var vendor ## Analyze code using PHPStan
 	$(RUN) phpstan analyze --memory-limit=1G $(ARGS)
 .PHONY: phpstan
 
+test: var vendor ## Run tests using PHPUnit
+	$(RUN) vendor/bin/phpunit $(ARGS) --colors
+.PHONY: test
+
 deps-analyze: vendor ## Analyze project dependencies using Composer dependency analyser
 	$(RUN) composer-dependency-analyser $(ARGS)
 .PHONY: deps-analyze
@@ -122,26 +126,27 @@ composer-normalize-check: ## Check that composer.json is normalized
 fix: fixer rector composer-normalize ## Run all fixing recipes
 .PHONY: fix
 
-check: fixer-check rector-check composer-validate composer-normalize-check deps-analyze phpstan  ## Run all project checks
+check: fixer-check rector-check composer-validate composer-normalize-check deps-analyze phpstan test  ## Run all project checks
 .PHONY: check
 
-WELL_KNOWN_PROTOS = \
-    google/protobuf/any.proto \
-    google/protobuf/api.proto \
-    google/protobuf/duration.proto \
-    google/protobuf/empty.proto \
-    google/protobuf/field_mask.proto \
-    google/protobuf/source_context.proto \
-    google/protobuf/wrappers.proto \
-    google/protobuf/struct.proto \
-    google/protobuf/timestamp.proto \
-    google/protobuf/type.proto
-
-compile: ## Compile known types
-	protoc \
-	    --plugin=protoc-gen-custom-plugin=/usr/local/bin/protoc-gen-php \
-	    $(WELL_KNOWN_PROTOS) \
-	    --custom-plugin_out=src_path=.:src
+compile:
+	$(DOCKER) run --rm \
+		--pull always \
+        --user 1000:1000 \
+        -v $(PWD):/workspace \
+        -w /workspace \
+        ghcr.io/thesis-php/protoc-plugin:latest \
+        --php-plugin_out=src_path=.:src \
+		google/protobuf/any.proto \
+		google/protobuf/api.proto \
+		google/protobuf/duration.proto \
+		google/protobuf/empty.proto \
+		google/protobuf/field_mask.proto \
+		google/protobuf/source_context.proto \
+		google/protobuf/wrappers.proto \
+		google/protobuf/struct.proto \
+		google/protobuf/timestamp.proto \
+		google/protobuf/type.proto
 .PHONY: compile
 
 # -----------------------

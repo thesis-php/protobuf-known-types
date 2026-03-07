@@ -47,7 +47,7 @@ function decodeAny(Any $any, Decoder $decoder, ?\Closure $resolveType = null): o
     }
 
     $type = $resolveType($typeUrl) ?? Pool\Registry::get()
-        ->messageByType($typeUrl)
+        ->messageDescriptorByType($typeUrl)
         ->fqcn;
 
     return $decoder->decode($any->value, $type);
