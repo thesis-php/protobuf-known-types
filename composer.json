@@ -25,6 +25,9 @@
     "require-dev": {
         "phpunit/phpunit": "^13.0"
     },
+    "conflict": {
+        "google/protobuf": "*"
+    },
     "autoload": {
         "psr-4": {
             "Google\\Protobuf\\": "src/"
