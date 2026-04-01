@@ -28,8 +28,8 @@ final class AnyTest extends TestCase
 
     public function testEncodeAnyCustomResolver(): void
     {
-        $any = encodeAny(new X('test'), Encoder\Builder::buildDefault(), static fn(X $x) => 'com.thesis.types/x');
-        self::assertSame('com.thesis.types/x', $any->typeUrl);
+        $any = encodeAny(new X('test'), Encoder\Builder::buildDefault(), static fn(X $x) => 'x');
+        self::assertSame('type.googleapis.com/x', $any->typeUrl);
         self::assertNotEmpty($any->value);
 
         $x = decodeAny($any, Decoder\Builder::buildDefault(), static fn(string $type) => X::class);

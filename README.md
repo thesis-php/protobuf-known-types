@@ -28,7 +28,7 @@ use Thesis\Protobuf\Encoder;
 $any = Protobuf\encodeAny(
     X::class,
     Encoder\Builder::buildDefault(),
-    static fn(X $x) => 'my.own.types/x',
+    static fn(X $x) => 'x',
 );
 ```
 
@@ -49,7 +49,7 @@ use Google\Protobuf;
 use Thesis\Protobuf\Decoder;
 
 $x = Protobuf\decodeAny(
-    new Protobuf\Any('my.own.types/x', '...'),
+    new Protobuf\Any('type.googleapis.com/x', '...'),
     Decoder\Builder::buildDefault(),
     static fn(string $type) => X::class,
 );
