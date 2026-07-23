@@ -35,7 +35,8 @@
         },
         "files": [
             "src/autoload.metadata.php",
-            "src/anypb.php"
+            "src/anypb.php",
+            "src/Timestamp/timestampb.php"
         ]
     },
     "autoload-dev": {
