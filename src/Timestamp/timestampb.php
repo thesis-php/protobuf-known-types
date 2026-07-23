@@ -66,6 +66,7 @@ function now(): Timestamp
 
 /**
  * @api
+ * @param Number|int|numeric-string $seconds
  * @throws \InvalidArgumentException
  */
 function fromSeconds(Number|int|string $seconds, int $nanos = 0): Timestamp
