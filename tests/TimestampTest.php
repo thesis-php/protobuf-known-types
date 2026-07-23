@@ -14,6 +14,9 @@ use PHPUnit\Framework\TestCase;
 #[CoversFunction('Google\Protobuf\Timestamp\toDateTime')]
 final class TimestampTest extends TestCase
 {
+    /**
+     * @param numeric-string $seconds
+     */
     #[DataProvider('dates')]
     public function testFromDateTime(string $iso, string $seconds, int $nanos): void
     {
@@ -25,6 +28,9 @@ final class TimestampTest extends TestCase
         self::assertSame($nanos, $timestamp->nanos);
     }
 
+    /**
+     * @param numeric-string $seconds
+     */
     #[DataProvider('dates')]
     public function testToDateTime(string $iso, string $seconds, int $nanos): void
     {
@@ -36,6 +42,9 @@ final class TimestampTest extends TestCase
         self::assertSame('UTC', $time->getTimezone()->getName());
     }
 
+    /**
+     * @param numeric-string $seconds
+     */
     #[DataProvider('dates')]
     public function testRoundTrip(string $iso, string $seconds, int $nanos): void
     {
