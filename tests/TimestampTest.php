@@ -48,7 +48,7 @@ final class TimestampTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{string, string, int}>
+     * @return iterable<string, array{string, numeric-string, int}>
      */
     public static function dates(): iterable
     {
