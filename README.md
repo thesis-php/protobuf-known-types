@@ -56,3 +56,24 @@ $x = Protobuf\decodeAny(
 ```
 
 In both cases, in `encodeAny` and `decodeAny`, your resolvers may return null to fall back to default type resolution using `Pool\Registry`.
+
+### Timestamp
+
+`google.protobuf.Timestamp` stores seconds since the Unix epoch and non-negative nanoseconds, which is precise but inconvenient. Use the helpers under `Google\Protobuf\Timestamp` to convert to and from native dates:
+
+```php
+use Google\Protobuf\Timestamp;
+
+$timestamp = Timestamp\now();
+
+$timestamp = Timestamp\fromDateTime(new DateTimeImmutable('2026-01-15 10:30:00'));
+
+$timestamp = Timestamp\fromSeconds(1768473000);
+$timestamp = Timestamp\fromSeconds(1768473000, nanos: 500_000_000);
+
+$date = Timestamp\toDateTime($timestamp);
+```
+
+`toDateTime` always returns a `DateTimeImmutable` in UTC. Nanoseconds are truncated to microseconds, since PHP dates cannot represent anything finer.
+
+Timestamps must stay within the range defined by the specification — from `0001-01-01T00:00:00Z` to `9999-12-31T23:59:59Z`, with nanos between 0 and 999999999. All the functions above validate this and throw an `InvalidArgumentException` otherwise. 
