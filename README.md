@@ -76,4 +76,5 @@ $date = Timestamp\toDateTime($timestamp);
 
 `toDateTime` always returns a `DateTimeImmutable` in UTC. Nanoseconds are truncated to microseconds, since PHP dates cannot represent anything finer.
 
-Timestamps must stay within the range defined by the specification — from `0001-01-01T00:00:00Z` to `9999-12-31T23:59:59Z`, with nanos between 0 and 999999999. All the functions above validate this and throw an `InvalidArgumentException` otherwise. 
+Timestamps must stay within the range defined by the specification — from `0001-01-01T00:00:00Z` to `9999-12-31T23:59:59Z`, with nanos between 0 and 999999999.
+All the functions above validate this and throw an `InvalidArgumentException` otherwise. 

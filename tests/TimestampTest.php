@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Google\Protobuf;
 
-use BcMath\Number;
 use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -14,39 +13,30 @@ use PHPUnit\Framework\TestCase;
 #[CoversFunction('Google\Protobuf\Timestamp\toDateTime')]
 final class TimestampTest extends TestCase
 {
-    /**
-     * @param numeric-string $seconds
-     */
     #[DataProvider('dates')]
-    public function testFromDateTime(string $iso, string $seconds, int $nanos): void
+    public function testFromDateTime(string $iso, int $seconds, int $nanos): void
     {
         $timestamp = Timestamp\fromDateTime(
             new \DateTimeImmutable($iso),
         );
 
-        self::assertSame($seconds, (string) $timestamp->seconds);
+        self::assertSame($seconds, $timestamp->seconds);
         self::assertSame($nanos, $timestamp->nanos);
     }
 
-    /**
-     * @param numeric-string $seconds
-     */
     #[DataProvider('dates')]
-    public function testToDateTime(string $iso, string $seconds, int $nanos): void
+    public function testToDateTime(string $iso, int $seconds, int $nanos): void
     {
         $time = Timestamp\toDateTime(
-            new Timestamp(new Number($seconds), $nanos),
+            new Timestamp($seconds, $nanos),
         );
 
         self::assertSame($iso, $time->format('Y-m-d\TH:i:s.u\Z'));
         self::assertSame('UTC', $time->getTimezone()->getName());
     }
 
-    /**
-     * @param numeric-string $seconds
-     */
     #[DataProvider('dates')]
-    public function testRoundTrip(string $iso, string $seconds, int $nanos): void
+    public function testRoundTrip(string $iso, int $seconds, int $nanos): void
     {
         $original = new \DateTimeImmutable($iso);
 
@@ -57,23 +47,23 @@ final class TimestampTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{string, numeric-string, int}>
+     * @return iterable<string, array{string, int, int}>
      */
     public static function dates(): iterable
     {
-        yield 'epoch' => ['1970-01-01T00:00:00.000000Z', '0', 0];
-        yield 'epoch with micros' => ['1970-01-01T00:00:00.000001Z', '0', 1_000];
-        yield 'positive' => ['2026-01-15T10:30:00.123456Z', '1768473000', 123_456_000];
-        yield 'one second before epoch' => ['1969-12-31T23:59:59.000000Z', '-1', 0];
-        yield 'half second before epoch' => ['1969-12-31T23:59:59.500000Z', '-1', 500_000_000];
-        yield 'min supported' => ['0001-01-01T00:00:00.000000Z', '-62135596800', 0];
-        yield 'max supported' => ['9999-12-31T23:59:59.999999Z', '253402300799', 999_999_000];
+        yield 'epoch' => ['1970-01-01T00:00:00.000000Z', 0, 0];
+        yield 'epoch with micros' => ['1970-01-01T00:00:00.000001Z', 0, 1_000];
+        yield 'positive' => ['2026-01-15T10:30:00.123456Z', 1_768_473_000, 123_456_000];
+        yield 'one second before epoch' => ['1969-12-31T23:59:59.000000Z', -1, 0];
+        yield 'half second before epoch' => ['1969-12-31T23:59:59.500000Z', -1, 500_000_000];
+        yield 'min supported' => ['0001-01-01T00:00:00.000000Z', -62_135_596_800, 0];
+        yield 'max supported' => ['9999-12-31T23:59:59.999999Z', 253_402_300_799, 999_999_000];
     }
 
     public function testNanosecondPrecisionIsTruncatedToMicroseconds(): void
     {
         $time = Timestamp\toDateTime(
-            new Timestamp(new Number('0'), 123_456_789),
+            new Timestamp(0, 123_456_789),
         );
 
         self::assertSame('123456', $time->format('u'));
@@ -85,7 +75,7 @@ final class TimestampTest extends TestCase
 
         $timestamp = Timestamp\fromDateTime($time);
 
-        self::assertSame('1768476600', (string) $timestamp->seconds);
+        self::assertSame(1_768_476_600, $timestamp->seconds);
     }
 
     public function testNowIsCloseToCurrentTime(): void
@@ -94,8 +84,8 @@ final class TimestampTest extends TestCase
         $timestamp = Timestamp\now();
         $after = time();
 
-        self::assertGreaterThanOrEqual($before, (int) (string) $timestamp->seconds);
-        self::assertLessThanOrEqual($after, (int) (string) $timestamp->seconds);
+        self::assertGreaterThanOrEqual($before, $timestamp->seconds);
+        self::assertLessThanOrEqual($after, $timestamp->seconds);
     }
 
     #[DataProvider('provideToDateTimeRejectsMalformedTimestampsCases')]
@@ -112,22 +102,22 @@ final class TimestampTest extends TestCase
     public static function provideToDateTimeRejectsMalformedTimestampsCases(): iterable
     {
         yield 'negative nanos' => [
-            new Timestamp(new Number('0'), -1),
+            new Timestamp(0, -1),
             'nanos must be between',
         ];
 
         yield 'nanos overflow' => [
-            new Timestamp(new Number('0'), 1_000_000_000),
+            new Timestamp(0, 1_000_000_000),
             'nanos must be between',
         ];
 
         yield 'seconds below min' => [
-            new Timestamp(new Number('-62135596801'), 0),
+            new Timestamp(-62_135_596_801, 0),
             'seconds must be between',
         ];
 
         yield 'seconds above max' => [
-            new Timestamp(new Number('253402300800'), 0),
+            new Timestamp(253_402_300_800, 0),
             'seconds must be between',
         ];
     }
@@ -142,13 +132,13 @@ final class TimestampTest extends TestCase
     public function testFromSecondsAcceptsScalarInput(): void
     {
         self::assertEquals(
-            new Timestamp(new Number('1768473000'), 0),
+            new Timestamp(1_768_473_000, 0),
             Timestamp\fromSeconds(1_768_473_000),
         );
 
         self::assertEquals(
-            new Timestamp(new Number('1768473000'), 500_000_000),
-            Timestamp\fromSeconds('1768473000', 500_000_000),
+            new Timestamp(1_768_473_000, 500_000_000),
+            Timestamp\fromSeconds(1_768_473_000, 500_000_000),
         );
     }
 }
