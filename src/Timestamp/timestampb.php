@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Google\Protobuf\Timestamp;
 
-use BcMath\Number;
 use Google\Protobuf\Timestamp;
 
 /** 0001-01-01T00:00:00Z */
@@ -21,7 +20,7 @@ const NANOS_PER_MICROSECOND = 1_000;
  */
 function fromDateTime(\DateTimeInterface $time): Timestamp
 {
-    $seconds = new Number($time->format('U'));
+    $seconds = (int) $time->format('U');
     $nanos = ((int) $time->format('u')) * NANOS_PER_MICROSECOND;
 
     return createTimestamp($seconds, $nanos);
@@ -66,19 +65,18 @@ function now(): Timestamp
 
 /**
  * @api
- * @param Number|int|numeric-string $seconds
  * @throws \InvalidArgumentException
  */
-function fromSeconds(Number|int|string $seconds, int $nanos = 0): Timestamp
+function fromSeconds(int $seconds, int $nanos = 0): Timestamp
 {
-    return createTimestamp($seconds instanceof Number ? $seconds : new Number((string) $seconds), $nanos);
+    return createTimestamp($seconds, $nanos);
 }
 
 /**
  * @internal
  * @throws \InvalidArgumentException
  */
-function createTimestamp(Number $seconds, int $nanos): Timestamp
+function createTimestamp(int $seconds, int $nanos): Timestamp
 {
     $timestamp = new Timestamp(seconds: $seconds, nanos: $nanos);
     assertValid($timestamp);
