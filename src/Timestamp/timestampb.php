@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Google\Protobuf\Timestamp;
+namespace Thesis\Google\Protobuf\Timestamp;
 
-use Google\Protobuf\Timestamp;
+use Thesis\Google\Protobuf\Timestamp;
 
 /** 0001-01-01T00:00:00Z */
 const MIN_SECONDS = -62_135_596_800;

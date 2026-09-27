@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Google\Protobuf;
+namespace Thesis\Google\Protobuf;
 
 use Thesis\Protobuf\Decoder;
 use Thesis\Protobuf\Encoder;

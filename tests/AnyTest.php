@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Google\Protobuf;
+namespace Thesis\Google\Protobuf;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;

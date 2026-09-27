@@ -31,7 +31,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Google\\Protobuf\\": "src/"
+            "Thesis\\Google\\Protobuf\\": "src/"
         },
         "files": [
             "src/autoload.metadata.php",
@@ -41,7 +41,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Google\\Protobuf\\": "tests/"
+            "Thesis\\Google\\Protobuf\\": "tests/"
         }
     },
     "config": {
